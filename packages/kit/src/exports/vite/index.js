@@ -816,15 +816,15 @@ async function kit({ svelte_config }) {
 					imports: [...start.imports, ...app.imports],
 					stylesheets: [...start.stylesheets, ...app.stylesheets],
 					fonts: [...start.fonts, ...app.fonts],
-					uses_env_dynamic_public: output.some(
+					uses_env_dynamic_public: output && output.some(
 						(chunk) => chunk.type === 'chunk' && chunk.modules[env_dynamic_public]
 					)
 				};
 
-				const css = output.filter(
+				const css = output && output.filter(
 					/** @type {(value: any) => value is import('vite').Rollup.OutputAsset} */
 					(value) => value.type === 'asset' && value.fileName.endsWith('.css')
-				);
+				) || [];
 
 				// regenerate manifest now that we have client entry...
 				fs.writeFileSync(
